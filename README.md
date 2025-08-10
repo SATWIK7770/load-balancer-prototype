@@ -55,8 +55,22 @@ docker run -it --rm \
 apt update && apt install docker.io -y
 apt install curl
 
-# Run Load Balancer
-docker run -d --name lb --network my-network -p 80:80 myloadbalancer
+# Run Load Balancer(static mode)
+docker run -it --rm `
+  --mode static `
+  --name lb `
+  --network my-network `
+  -p 8080:80 `
+  -v ${PWD}\servers.json:/app/servers.json `
+  mylb
+
+# Run Load Balancer(dynamic mode)
+docker run -it --rm `
+  --mode dynamic `
+  --name lb `
+  --network my-network `
+  -p 8080:80 `
+  mylb
 
 # Run Server
 docker run -d --name server1 --network my-network \
@@ -64,9 +78,15 @@ docker run -d --name server1 --network my-network \
   -e port=3000 \
   -e region=us-east \
   -e capacity=10 \
-  -e serverType=static \
+  -e serverType=static/dynamic \
   -e hostname=server1 \
   -e lbURL=http://lb:80 \
   myserver
+
+# Starting/Crashing/Ending server via cockpit-
+curl -X POST http://server1:3000/control/start
+curl -X POST http://server1:3000/control/crash
+curl -X POST http://server3:3000/control/end
+
 
 

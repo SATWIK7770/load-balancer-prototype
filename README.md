@@ -74,8 +74,8 @@ This is a Node.js HTTP load balancer that implements both static (weighted hashi
 
 ## Server Registration API
 
-- `POST /register` — registers a server with: `
-  { "id": "s1", "port": 3000, "region": "us-east", "capacity": 10, "hostname": "localhost", "url": "http://localhost:3000" }`
+- `POST /register` — registers a server with:
+  `{ "id": "s1", "port": 3000, "region": "us-east", "capacity": 10, "hostname": "localhost", "url": "http://localhost:3000" }`
 - `POST /deregister` — deregisters a server with: `{ id, url, region }`
 
 

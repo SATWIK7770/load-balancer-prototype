@@ -95,13 +95,13 @@ curl -X POST http://server3:3000/control/end
 
 ### Testing Phase
 I did load testing via the k6.js module using the following schemes-  
-- **Static Mode** (refer the servers.json) file -
+- **Static Mode** (refer the servers.json file) -
   - Crash server6 at 1 min
   - Crash server7 at 2 min 10 sec
   - Crash server5 at 3 min 10 sec
   - Crash server3 at 4min
 
-- **Dynamic Mode** (same server configuration as used in static mode)
+- **Dynamic Mode** (same server attributes as used in static mode) -
   - Crash server6 at 1 min
   - Crash server7 at 2 min 10 sec
   - Restart server6 at 2 min 40 sec

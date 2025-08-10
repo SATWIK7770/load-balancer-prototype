@@ -1,106 +1,54 @@
-# Load Balancer Prototype
+# Load Balancer Simulation – Static & Dynamic Modes
 
-This is a Node.js HTTP load balancer that implements both static (weighted hashing) and dynamic (region-aware, latency/availability-aware) routing. It supports server registration/deregistration, health checks with cooldown, sticky sessions with expiry, capacity-aware scoring, and region-proximity fallback.
-
-
-# Features Implemented
-
-## Dual Modes
-
-- **Static mode**  
-  Reads `servers.json`, expands each server by `capacity` into a `serverPool`, and maps clients to servers using a **SHA-256 based weighted hash** (`client-id` header → deterministic server).
-
-- **Dynamic mode**  
-  Servers register at runtime via HTTP `/register` and deregister via `/deregister`. The LB maintains an in-memory `regionServerMap`.
+This project implements a high-quality **load balancer prototype** in **Node.js** with both **static** and **dynamic** modes, designed for showcasing advanced system design concepts. It simulates realistic network conditions, client–server latency, region-aware routing, sticky sessions, and failover handling, making it suitable for demonstration in professional applications.
 
 ---
 
-## Region & Latency Awareness
+## Features
 
-- `latencyMap` defines per-region base latency (used in timeout computation / scoring).
-- `regionProximityRank` provides fallback order when local region servers are unavailable.
+### Static Mode
+- Uses **Weighted Hashing Algorithm** with pre-defined servers from a configuration file.
+- Ignores server health and load — strictly follows static mapping rules.
+- Simulates client-to-server latency based on assigned regions.
 
----
-
-## Capacity-Aware Server Scoring
-
-- Each registered server maintains:
-  - `activeConnections`
-  - `serverLatency`
-  - `serverCapacity`  
-  These values are used to compute a `serverScore` for selection.
-
----
-
-## Sticky Sessions (Session Affinity)
-
-- `clientSessionMap` holds **client → server** mappings.
-- Sessions include a timer (`lastClientRequestTimer`) that expires sessions after inactivity (timer logic present in code).
+### Dynamic Mode
+- **Server Registration/Deregistration** – servers can join/leave at runtime.
+- **Health Checks & Failover** – automatically detects server downtime and switches to backups.
+- **Latency-Aware Scoring** – assigns requests to the best available server considering region and response time.
+- **Sticky Sessions with Expiry** – maintains client–server mapping for 5 minutes of inactivity.
+- **Region-Based Allocation** – prioritizes servers in the same region as the client.
+- **Timeout Handling** – region-aware timeouts for slow servers.
 
 ---
 
-## Failover and Backup Selection
-
-- If a primary server fails or becomes overloaded, a backup server is selected using:
-- `allocateServer(clientRegion, primaryServer)` which prefers same-region servers and falls back to proximate regions.
-
----
-
-## Health Checks & Degraded Handling
-
-- Periodic `healthCheck()` runs (configured via `healthTimeout` and scheduled via `setInterval`):
-- Pings `/health` on each registered server.
-- Increments `failedPings` and moves servers into `inCoolDown` and `isDegraded` when failures exceed threshold.
-- Resets `failedPings` when the server recovers.
-- Filters out explicitly `isDegraded === true` servers from the region map.
+## Technology Stack
+- **Node.js** + **Express** – load balancer and server simulation.
+- **Axios** – request forwarding with timeout handling.
+- **Docker** – containerized load balancer and servers for easy setup and isolation.
+- **k6** – traffic simulation for testing performance under load.
 
 ---
 
-## Timeout and Abort Behavior
+## Docker Usage
 
-- Request forwarding uses timeouts computed as `timeoutBase + latencyMap.get(region)`
-- Both static and dynamic handlers abort outbound requests on timeout and return 500 to the client.
+This project supports running the **load balancer** and **multiple servers** in isolated containers within a custom Docker network.
 
----
+Example commands:
 
-## HTTP Proxying
+```bash
+# Create a network for communication between containers
+docker network create my-network
 
-- Full request/response proxying for HTTP methods:
-- Request body streaming (`req.on('data')`)
-- Response chunk piping back to clients
-- Header handling to avoid double-sending
+# Run Load Balancer
+docker run -d --name lb --network my-network -p 80:80 myloadbalancer
 
----
-
-## Server Registration API
-
-- `POST /register` — registers a server with:  
-  `{ "id": "s1", "port": 3000, "region": "us-east", "capacity": 10, "hostname": "localhost", "url": "http://localhost:3000" }`
-- `POST /deregister` — deregisters a server with: `{ id, url, region }`
-
----
-
-## How It Works (Brief)
-
-- **Static mode**  
-  Deterministic mapping using `client-id` hash → `serverPool` entry (capacity-weighted). No runtime health awareness.
-
-- **Dynamic mode**  
-  Servers register themselves; the LB periodically health-checks servers and maintains availability flags.  
-  Clients are matched:
-  1. First to sticky sessions (if valid)
-  2. Otherwise to the best available server in the region
-  3. Falls back to a proximate region if needed
-
----
-
-## Configuration / Environment Variables
-
-- `mode` — `"static"` (default) or `"dynamic"`.
-- `timeoutBase` — Base timeout in ms (**default 2000**). Used with `latencyMap` to compute per-request timeout.
-- `healthTimeout` — Timeout for health checks in ms (**default 5000**).
-- `port` — LB listens on **80** in the code (you may run with permissions or change value).
-
-
-
-
+# Run Server
+docker run -d --name server1 --network my-network \
+  -e serverID=s1 \
+  -e port=3000 \
+  -e region=us-east \
+  -e capacity=10 \
+  -e serverType=static \
+  -e hostname=server1 \
+  -e lbURL=http://lb:80 \
+  myserver

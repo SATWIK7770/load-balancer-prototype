@@ -78,5 +78,29 @@ This is a Node.js HTTP load balancer that implements both static (weighted hashi
   `{ "id": "s1", "port": 3000, "region": "us-east", "capacity": 10, "hostname": "localhost", "url": "http://localhost:3000" }`
 - `POST /deregister` — deregisters a server with: `{ id, url, region }`
 
+---
+
+## How It Works (Brief)
+
+- **Static mode**  
+  Deterministic mapping using `client-id` hash → `serverPool` entry (capacity-weighted). No runtime health awareness.
+
+- **Dynamic mode**  
+  Servers register themselves; the LB periodically health-checks servers and maintains availability flags.  
+  Clients are matched:
+  1. First to sticky sessions (if valid)
+  2. Otherwise to the best available server in the region
+  3. Falls back to a proximate region if needed
+
+---
+
+## Configuration / Environment Variables
+
+- `mode` — `"static"` (default) or `"dynamic"`.
+- `timeoutBase` — Base timeout in ms (**default 2000**). Used with `latencyMap` to compute per-request timeout.
+- `healthTimeout` — Timeout for health checks in ms (**default 5000**).
+- `port` — LB listens on **80** in the code (you may run with permissions or change value).
+
+
 
 

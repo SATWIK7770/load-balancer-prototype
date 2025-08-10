@@ -90,5 +90,14 @@ curl -X POST http://server1:3000/control/start
 curl -X POST http://server1:3000/control/crash
 curl -X POST http://server3:3000/control/end
 
+```
+
+### Results  
+I did load testing via the k6.js module using the following schemes-  
+
+**Static Mode** ( refer the server.json file) -  
+-
+
+
 
 

@@ -6,6 +6,12 @@ This project implements a high-quality **load balancer prototype** in **Node.js*
 
 ## Features
 
+### 🖥️ Cockpit Central Control
+A dedicated Ubuntu container runs Cockpit, a web-based server management tool, allowing:
+-Starting/stopping servers
+-Simulating server crashes
+-Restarting services
+
 ### Static Mode
 - Uses **Weighted Hashing Algorithm** with pre-defined servers from a configuration file.
 - Ignores server health and load — strictly follows static mapping rules.
@@ -39,6 +45,16 @@ Example commands:
 # Create a network for communication between containers
 docker network create my-network
 
+# Setup cockpit
+docker run -it --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --network lb-net \
+  --name cockpit \
+  ubuntu bash
+
+apt update && apt install docker.io -y
+apt install curl
+
 # Run Load Balancer
 docker run -d --name lb --network my-network -p 80:80 myloadbalancer
 
@@ -52,3 +68,5 @@ docker run -d --name server1 --network my-network \
   -e hostname=server1 \
   -e lbURL=http://lb:80 \
   myserver
+
+

@@ -7,9 +7,9 @@ This project implements a high-quality **load balancer prototype** in **Node.js*
 ## Features
 
 ### 🖥️ Cockpit Central Control
-A dedicated Ubuntu container runs Cockpit, a web-based server management tool, allowing:
--Starting/stopping servers
--Simulating server crashes
+A dedicated Ubuntu container runs Cockpit, a web-based server management tool, allowing:  
+-Starting/stopping servers  
+-Simulating server crashes  
 -Restarting services
 
 ### Static Mode

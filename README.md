@@ -116,7 +116,7 @@ I did load testing via the k6.js module using the following schemes-
 - **Static Mode**  (19.38% requests failed)
    <img width="1731" height="572" alt="Screenshot 2025-08-04 114711" src="https://github.com/user-attachments/assets/bbed55b7-ff8e-4986-bd66-933fd4db89a3" />
 
- - **Dynamic Mode**  (6.71% requests failed)
+ - **Dynamic Mode**  (only 6.71% requests failed)
    <img width="1577" height="449" alt="Screenshot 2025-08-10 162947" src="https://github.com/user-attachments/assets/df85b574-bcb0-47c8-be25-e018179149b7" />
 
 

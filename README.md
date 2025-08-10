@@ -42,4 +42,5 @@ This is a Node.js HTTP load balancer that implements both static (weighted hashi
 ## Failover and Backup Selection
 
 - If a primary server fails or becomes overloaded, a backup server is selected using:
+- `allocateServer(clientRegion, primaryServer)` which prefers same-region servers and falls back to proximate regions.
 

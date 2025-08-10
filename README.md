@@ -91,12 +91,34 @@ curl -X POST http://server1:3000/control/crash
 curl -X POST http://server3:3000/control/end
 
 ```
+---
 
-### Results  
+### Testing Phase
 I did load testing via the k6.js module using the following schemes-  
+- **Static Mode** (refer the servers.json) file -
+  - Crash server6 at 1 min
+  - Crash server7 at 2 min 10 sec
+  - Crash server5 at 3 min 10 sec
+  - Crash server3 at 4min
 
-Static Mode ( refer the server.json file) -  
--
+- **Dynamic Mode** (same server configuration as used in static mode)
+  - Crash server6 at 1 min
+  - Crash server7 at 2 min 10 sec
+  - Restart server6 at 2 min 40 sec
+  - Crash server5 at 3 min 10 sec
+  - Restart server7 at 3 min 40 sec
+  - Crash server3 at 4 min 10 sec
+  - Restart server5 at 4 min 40 sec
+
+ ---
+
+ ### Results
+ - ** Static Mode**
+   <img width="1731" height="572" alt="Screenshot 2025-08-04 114711" src="https://github.com/user-attachments/assets/bbed55b7-ff8e-4986-bd66-933fd4db89a3" />
+
+
+ 
+
 
 
 

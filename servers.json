@@ -1,0 +1,82 @@
+[
+  {
+    "id": "s1",
+    "port": 3000,
+    "region": "us-east",
+    "capacity": 10,
+    "hostname": "server1",
+    "url": "http://server1:3000"
+  },
+  {
+    "id": "s2",
+    "port": 3000,
+    "region": "eu-west",
+    "capacity": 8,
+    "hostname": "server2",
+    "url": "http://server2:3000"
+  },
+  {
+    "id": "s3",
+    "port": 3000,
+    "region": "asia-south",
+    "capacity": 7,
+    "hostname": "server3",
+    "url": "http://server3:3000"
+  },
+  {
+    "id": "s4",
+    "port": 3000,
+    "region": "oceania",
+    "capacity": 6,
+    "hostname": "server4",
+    "url": "http://server4:3000"
+  },
+  {
+    "id": "s5",
+    "port": 3000,
+    "region": "ca-central",
+    "capacity": 9,
+    "hostname": "server5",
+    "url": "http://server5:3000"
+  },
+  {
+    "id": "s6",
+    "port": 3000,
+    "region": "us-east",
+    "capacity": 10,
+    "hostname": "server6",
+    "url": "http://server6:3000"
+  },
+  {
+    "id": "s7",
+    "port": 3000,
+    "region": "oceania",
+    "capacity": 6,
+    "hostname": "server7",
+    "url": "http://server7:3000"
+  },
+  {
+    "id": "s8",
+    "port": 3000,
+    "region": "eu-west",
+    "capacity": 8,
+    "hostname": "server8",
+    "url": "http://server8:3000"
+  },
+  {
+    "id": "s9",
+    "port": 3000,
+    "region": "asia-south",
+    "capacity": 7,
+    "hostname": "server9",
+    "url": "http://server9:3000"
+  },
+  {
+    "id": "s10",
+    "port": 3000,
+    "region": "ca-central",
+    "capacity": 9,
+    "hostname": "server10",
+    "url": "http://server10:3000"
+  }
+]

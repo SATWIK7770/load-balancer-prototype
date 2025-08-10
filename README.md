@@ -37,7 +37,9 @@ A dedicated Ubuntu container runs Cockpit, a web-based server management tool, a
 
 ## Docker Usage
 
-This project supports running the **load balancer** and **multiple servers** in isolated containers within a custom Docker network.
+This project supports running the **load balancer** and **multiple servers** in isolated containers within a custom Docker network.  
+The load balancer is exposed to the client while the servers are isolated from public only accessible by the load balancer.
+To start , first create containers of load balancer and the required servers.
 
 Example commands:
 

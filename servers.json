@@ -1,3 +1,6 @@
+
+// this is file is to be used only in static mode
+
 [
   {
     "id": "s1",
@@ -80,3 +83,4 @@
     "url": "http://server10:3000"
   }
 ]
+

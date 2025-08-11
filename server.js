@@ -47,7 +47,6 @@ class server{
     }
 
     start(){
-
         if(this.isAvailable){
             this.httpServer.listen(this.port , server.networkHostname , () => {
                 console.log(`server ${this.id} is running at ${this.url}`);
@@ -59,8 +58,7 @@ class server{
         }
     }
 
-    end(){
-        
+    end(){        
         this.setisAvailable(false);
 
         if(this.serverType === "dynamic"){
@@ -129,22 +127,11 @@ node.start();
 app.post("/control/start" , (req ,res) => {
     node.setisAvailable(true);
     res.end();
-
-    // req.on("error" , () => {
-    //     res.statusCode = 400;
-    //     res.end("request error");
-    // })
 })
 
 app.post("/control/end" , (req , res) => {
     node.end();
     res.end();
-
-    // req.on("error" , () => {
-    //     res.statusCode = 400;
-    //     res.end("request error");
-    // })
-
 })
 
 app.post("/control/crash" , (req , res) => {
@@ -153,6 +140,9 @@ app.post("/control/crash" , (req , res) => {
 })
 
 app.get("/health" , (req , res) => {
+    if(!node.isAvailable){
+        res.statusCode(503).end();
+    }
     res.statusCode = 200;
     res.end("ok");
 })
@@ -164,17 +154,12 @@ app.all("*" , (req , res) => {
     }
 
     setTimeout(() => {
-        // req.on("error" , (err) => {
-        //     res.statusCode = 500;
-        //     res.end("server error");
-        // })        
-
         res.writeHead(200 , {
             "Content-Type" : "text/html",
             "serverID" : node.id,
             "serverRegion" : node.region
         });
-
+        
         const body = ` 
             <!DOCTYPE html>
             <html>
@@ -193,7 +178,4 @@ app.all("*" , (req , res) => {
             console.log(err);
         });
     } , delay);
-
 })
-
-
